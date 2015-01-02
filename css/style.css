@@ -1,0 +1,43 @@
+.newbie {
+	color: gray;
+}
+
+.specialist, .pupil {
+	color: green;
+}
+
+.expert {
+	color: blue;
+}
+
+.candidate-master {
+	color: purple;
+}
+
+.master, .international-master {
+	color: orange;
+}
+
+.grandmaster, .international-grandmaster {
+	color: red;
+}
+
+.up-direction {
+	color: #8080FF;
+}
+
+.down-direction {
+	color: #FF0000;
+}
+
+a {
+	text-decoration: none !important;
+}
+
+.good {
+	color: #08FF08;
+}
+
+.bad {
+	color: #FF0808;
+}

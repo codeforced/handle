@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="handle">
+<head>
+    <meta charset="utf-8">
+    
+    <!-- Set the viewport so this responsive site displays correctly on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Handle</title>
+    
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+<!-- Site header and navigation -->
+<header class="top" role="header">
+	<div class="container">
+		<a href="#" class="navbar-brand pull-left">
+			HANDLE
+		</a>
+		<!-- <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="glyphicon glyphicon-align-justify"></span>
+		</button>
+		<nav class="navbar-collapse collapse" role="navigation">
+			<ul class="navbar-nav nav">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</nav> -->
+	</div>
+</header>
+
+<!-- Banner -->
+<div class="container" ng-controller="CodeforcesHandle as codeforces">
+	<div class="row"> <!-- begin search form -->
+		<div class="col-md-12">
+			<form class="form-inline" ng-submit="codeforces.search()" novalidate>
+				<div class="form-group">
+					<input class="form-control" type="text" ng-model="codeforces.handle" placeholder="Handle">
+				</div>
+				<button class="btn btn-default" type="submit">Go!</button>
+			</form>
+		</div>
+	</div> <!-- end search form -->
+
+	<hr>
+
+	<div class="row" ng-show="codeforces.userInfo"> <!-- begin user info -->
+		<div class="col-md-12">
+			<blockquote >
+				<h2> <!-- begin user rank -->
+					<a href="http://codeforces.com/profile/{{ codeforces.userInfo.handle }}" target="_blank">
+						<span ng-class="codeforces.userInfo.rank.split(' ').join('-')">
+							{{ codeforces.userInfo.rank + ' ' + codeforces.userInfo.handle }}
+						</span>
+					</a>
+				</h2> <!-- end user rank -->
+
+				<!-- user's name, city and country if any -->
+				<p>
+					<b> {{ codeforces.userInfo.firstName + ' ' + codeforces.userInfo.lastName }} </b>
+					from <b> {{ (codeforces.userInfo.city ? codeforces.userInfo.city + ', ' : '') + codeforces.userInfo.country }} </b>
+				</p>
+				
+				<!-- user organizations if any -->
+				<p>
+					{{ codeforces.userInfo.organization }} <br>
+				</p>
+
+				<!-- user's email -->
+				<p ng-show="codeforces.userInfo.email">
+					- {{ codeforces.userInfo.email }} <br>
+				</p>
+
+				<!-- user's rating -->
+				<p>
+					<b>Rating:</b> <span class="{{ codeforces.userInfo.rank.split(' ').join('_') }}"> <b> {{ codeforces.userInfo.rating }} </b> </span> <br>
+					<b>Max Rating:</b> <span class="{{ codeforces.userInfo.maxRank.split(' ').join('_') }}"> <b> {{ codeforces.userInfo.maxRating }} </b> </span> <br>
+					<b>Contribution:</b> <span> {{ codeforces.userInfo.contribution }} </span>
+				</p>
+			</blockquote>
+		</div>
+	</div> <!-- end user info -->
+
+	<div class="row">
+		<div class="col-md-6" ng-show="codeforces.ratingChange"> <!-- begin rating change -->
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<th>#</th>
+					<th>Contest</th>
+					<th>Rank</th>
+					<th>New rating</th>
+					<th></th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="change in codeforces.ratingChange">
+						<td> {{ codeforces.ratingChange.length - $index }} </td>
+						<td> {{ change.contestName }} </td>
+						<td class="text-center"> <b> {{ change.rank }} </b> </td>
+						<td class="text-center">
+							<span tooltip="{{ codeforces.getRank(change).split('-').join(' ') }}" class="{{ codeforces.getRank(change) }}">
+								<b>{{ change.newRating }}</b>
+							</span>
+						</td>
+						<td>
+							<span tooltip-html-unsafe="{{ change.changeTooltip }}" class="{{ codeforces.ratingDir(change) }}" aria-hidden="true"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div> <!-- end rating change -->
+
+		<div class="col-md-6" ng-show="codeforces.status"> <!-- begin problem status -->
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<th>Contest ID</th>
+					<th>Tried Problems</th>
+				</thead>
+				<tbody>
+					<tr ng-repeat="contest in codeforces.status">
+						<td>
+							<a class="custom" href="http://codeforces.com/submissions/{{codeforces.userInfo.handle}}/contest/{{contest.contestId}}">
+								{{ contest.contestId }}
+							</a>
+						</td>
+						<td>
+							<div class="btn-group">
+								<a class="btn" tooltip-html-unsafe="{{ prob.tooltip }}" ng-class="prob.solved" ng-repeat="prob in contest.problems">
+									{{ prob.problemId }}
+								</a> &nbsp;
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div> <!-- end problem status -->
+	</div>
+</div>
+
+<!-- Include Angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+<script src="lib/ui-bootstrap-tpls-0.12.0.min.js"></script>
+<script src="ng/handle.js"></script>
+</body>
+</html>
