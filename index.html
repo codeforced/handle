@@ -11,6 +11,9 @@
     <!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 
+	<!-- include angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -77,8 +80,8 @@
 
 				<!-- user's rating -->
 				<p>
-					<b>Rating:</b> <span class="{{ codeforces.userInfo.rank.split(' ').join('_') }}"> <b> {{ codeforces.userInfo.rating }} </b> </span> <br>
-					<b>Max Rating:</b> <span class="{{ codeforces.userInfo.maxRank.split(' ').join('_') }}"> <b> {{ codeforces.userInfo.maxRating }} </b> </span> <br>
+					<b>Rating:</b> <span class="{{ codeforces.userInfo.rank.split(' ').join('-') }}"> <b> {{ codeforces.userInfo.rating }} </b> </span> <br>
+					<b>Max Rating:</b> <span class="{{ codeforces.userInfo.maxRank.split(' ').join('-') }}"> <b> {{ codeforces.userInfo.maxRating }} </b> </span> <br>
 					<b>Contribution:</b> <span> {{ codeforces.userInfo.contribution }} </span>
 				</p>
 			</blockquote>
@@ -99,7 +102,11 @@
 				<tbody>
 					<tr ng-repeat="change in codeforces.ratingChange">
 						<td> {{ codeforces.ratingChange.length - $index }} </td>
-						<td> {{ change.contestName }} </td>
+						<td>
+							<a href="http://codeforces.com/contest/500/{{ change.id }}" target="_blank">
+								{{ change.contestName }}
+							</a>
+						</td>
 						<td class="text-center"> <b> {{ change.rank }} </b> </td>
 						<td class="text-center">
 							<span tooltip="{{ codeforces.getRank(change).split('-').join(' ') }}" class="{{ codeforces.getRank(change) }}">
@@ -124,7 +131,7 @@
 				<tbody>
 					<tr ng-repeat="contest in codeforces.status">
 						<td>
-							<a class="custom" href="http://codeforces.com/submissions/{{codeforces.userInfo.handle}}/contest/{{contest.contestId}}">
+							<a class="custom" href="http://codeforces.com/submissions/{{codeforces.userInfo.handle}}/contest/{{contest.contestId}}" target="_blank">
 								{{ contest.contestId }}
 							</a>
 						</td>
@@ -143,7 +150,6 @@
 </div>
 
 <!-- Include Angular -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
 <script src="lib/ui-bootstrap-tpls-0.12.0.min.js"></script>
 <script src="ng/handle.js"></script>
 </body>
